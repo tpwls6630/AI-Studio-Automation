@@ -7,6 +7,11 @@ import time
 import pickle
 
 USER_DATA_DIR = os.getenv("USER_DATA_DIR")
+try:
+    with open("system_prompt.txt", "r", encoding='utf-8') as f:
+        SYSTEM_PROMPT = f.read()
+except Exception as e:
+    raise Exception("SYSTEM PROMPT를 읽어오는 중 에러 발생: ", str(e))
 
 # 브라우저 열기
 def open_browser(user_data_dir: str,
@@ -39,8 +44,7 @@ def get_exam(context: BrowserContext):
 
     # 프롬프트 입력
     page.mouse.click(362, 465)
-    with open("system_prompt.txt", "r", encoding='utf-8') as f:
-        page.keyboard.insert_text(f.read())
+    page.keyboard.insert_text(SYSTEM_PROMPT)
     
     # Run 버튼 클릭
     run_btn = page.get_by_role("button", name="Run", exact=True)
@@ -49,6 +53,7 @@ def get_exam(context: BrowserContext):
     # 응답 대기
     spinner = page.locator("circle.stoppable-spinner")
     spinner.wait_for(state="detached", timeout=0)
+    time.sleep(2)
 
     # 응답 추출
     code_element = page.locator("code")
@@ -68,7 +73,7 @@ def main():
         context = browser.contexts[0]
 
         # 문제 무한 생성 후 저장
-        while True:
+        for _ in range(100):
             question = get_exam(context)
             print(question)
             question_gen_timestamp = datetime.datetime.now().strftime("%Y%m%d%H%M%S")
