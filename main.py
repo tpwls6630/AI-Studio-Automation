@@ -5,8 +5,14 @@ import requests
 import datetime
 import time
 import pickle
+import dotenv
+
+dotenv.load_dotenv(".env")
 
 USER_DATA_DIR = os.getenv("USER_DATA_DIR")
+if USER_DATA_DIR is None:
+    raise Exception("USER_DATA_DIR를 불러오지 못함.")
+
 try:
     with open("system_prompt.txt", "r", encoding='utf-8') as f:
         SYSTEM_PROMPT = f.read()
