@@ -1,0 +1,9 @@
+./data/
+./solutions/
+./images/
+./venv/
+*.pdf
+*.json
+*.zip
+*.csv
+
