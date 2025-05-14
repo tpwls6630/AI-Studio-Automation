@@ -1,7 +1,7 @@
-./data/
-./solutions/
-./images/
-./venv/
+data/**/*
+solutions/**/*
+images/**/*
+venv/**/*
 *.pdf
 *.json
 *.zip
